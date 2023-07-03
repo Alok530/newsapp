@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react'
-import NavBar from './components/NavBar';
-import News from './components/News';
+import NavBar from './admin/NavBar';
+import News from './admin/News';
 
 import { Routes, Route } from "react-router-dom";
 
