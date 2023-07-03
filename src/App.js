@@ -1,25 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react'
+import NavBar from './components/NavBar';
+import News from './components/News';
 
-function App() {
+import { Routes, Route } from "react-router-dom";
+
+const App = () => {
+  let pageSize = 9;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<News key="general" pagesize={pageSize} country="in" category="general" />}/>
+          <Route path="/home" element={<News key="general" pagesize={pageSize} country="in" category="general" />}/>
+          <Route path="/health" element={<News key="health" pagesize={pageSize} country="in" category="health" />}/>
+          <Route path="/sports" element={<News key="sports" pagesize={pageSize} country="in" category="sports" />}/>
+          <Route path="/science" element={<News key="science" pagesize={pageSize} country="in" category="science" />}/>
+          <Route path="/business" element={<News key="business" pagesize={pageSize} country="in" category="business" />}/>
+          <Route path="/technology" element={<News key="technology" pagesize={pageSize} country="in" category="technology" />}/>
+          <Route path="/entertainment" element={<News key="entertainment" pagesize={pageSize} country="in" category="entertainment" />}/>
+        </Routes>
+    </>
+  )
 }
 
 export default App;
