@@ -3,6 +3,7 @@ import NewsItem from "./NewsItem";
 import Spiner from "./Spiner";
 import Scroll from './Scroll';
 import { useState, useEffect } from 'react';
+import axios from "axios";
 
 const News = (props) => {
     const [loading, setloading] = useState(false);
@@ -10,42 +11,46 @@ const News = (props) => {
     const [alok, setalok] = useState([]);
     const [tolatItem, settotalItem] = useState(0);
     const [page, setpage] = useState(1);
-    
-    
-    
+
     const fetchAllfun = async () => {
         let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=940e644e5d17426fb7643fdd69f1f3ec&page=1&pageSize=${props.pagesize}`
         setloading(true);
-        let data = await fetch(url);
+        let response = await axios.get(url);
         // fetch() it return promises so await
         // the data we are getting after fetch url is in form of (json) which can not be use in javascript
         // so we need to convert json data into javascript Object by the help of { .json() } methods 
-        let parsedData = await data.json();
-        setalok(parsedData.articles);
-        settotalItem(parsedData.totalResults);
+        // let parsedData = await data.json();
+        setalok(response.data.articles);
+        settotalItem(response.data.totalResults);
         setpage(1);
         setnextBTNdisable(false);
         setloading(false);
     }
-
+    
+    useEffect(()=>{
+        fetchAllfun();
+    },[])
+    
     const nextPage = async () => {
         if (page + 1 > Math.ceil(tolatItem / props.pagesize)) {
             setnextBTNdisable(true);
         } else {            
             let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=940e644e5d17426fb7643fdd69f1f3ec&page=${page + 1}&pageSize=${props.pagesize}`;
-            let data = await fetch(url);
-            let parsedData = await data.json();
+            // let data = await fetch(url);
+            // let parsedData = await data.json();
+            let response = await axios.get(url);
             setpage(page + 1);
-            setalok(parsedData.articles);
+            setalok(response.data.articles);
             setnextBTNdisable(false);
         }
     }
 
     const previousPage = async () => {
         let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=940e644e5d17426fb7643fdd69f1f3ec&page=${page - 1}&pageSize=${props.pagesize}`
-        let data = await fetch(url);
-        let parsedData = await data.json();
-        setalok(parsedData.articles);
+        // let data = await fetch(url);
+        // let parsedData = await data.json();
+        let response = await axios.get(url);
+        setalok(response.data.articles);
         setpage(page - 1);
         setnextBTNdisable(false);
     }
@@ -54,9 +59,9 @@ const News = (props) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    useEffect(() => {
-        fetchAllfun();
-    }, []);
+    // useEffect(() => {
+    //     fetchAllfun();
+    // },[loading]);
 
     return (
         <>
